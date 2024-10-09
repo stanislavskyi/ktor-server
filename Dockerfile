@@ -8,6 +8,7 @@ COPY build.gradle.kts build.gradle.kts
 COPY settings.gradle.kts settings.gradle.kts
 COPY src src
 COPY gradle.properties gradle.properties
+COPY google-services.json google-services.json
 
 RUN chmod +x gradlew
 RUN ./gradlew clean
