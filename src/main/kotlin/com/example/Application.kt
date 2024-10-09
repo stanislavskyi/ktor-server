@@ -13,14 +13,14 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
 
-    val serviceAccount = FileInputStream("google-services.json")
-
-    val options = FirebaseOptions.builder()
-        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-        .setDatabaseUrl("https://musicplayerapplication-be7c8.firebaseio.com")
-        .build()
-
-    FirebaseApp.initializeApp(options)
+//    val serviceAccount = FileInputStream("google-services.json")
+//
+//    val options = FirebaseOptions.builder()
+//        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+//        .setDatabaseUrl("https://musicplayerapplication-be7c8.firebaseio.com")
+//        .build()
+//
+//    FirebaseApp.initializeApp(options)
 
     configureRouting()
 }
