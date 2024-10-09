@@ -19,7 +19,7 @@ fun Application.configureRouting() {
             val userId = request["userId"]
 
             if (token != null && userId != null) {
-                saveTokenToDatabase(userId, token)
+                //saveTokenToDatabase(userId, token)
                 call.respond(HttpStatusCode.OK, "Token saved successfully")
             } else {
                 call.respond(HttpStatusCode.BadRequest, "Missing token or userId")
@@ -28,22 +28,22 @@ fun Application.configureRouting() {
     }
 }
 
-fun saveTokenToDatabase(userId: String, token: String) {
-    // Initialize Firestore
-    val firestore = FirestoreOptions.getDefaultInstance().service
-
-    // Create a reference to the user's document
-    val docRef = firestore.collection("users").document(userId)
-
-    // Create a map of data to update in the document
-    val data = hashMapOf<String, Any>(
-        "token" to token
-    )
-
-    // Update the document
-    docRef.set(data).addListener({
-        println("Token successfully saved for user: $userId")
-    }, {
-        println("Error saving token")
-    })
-}
+//fun saveTokenToDatabase(userId: String, token: String) {
+//    // Initialize Firestore
+//    val firestore = FirestoreOptions.getDefaultInstance().service
+//
+//    // Create a reference to the user's document
+//    val docRef = firestore.collection("users").document(userId)
+//
+//    // Create a map of data to update in the document
+//    val data = hashMapOf<String, Any>(
+//        "token" to token
+//    )
+//
+//    // Update the document
+//    docRef.set(data).addListener({
+//        println("Token successfully saved for user: $userId")
+//    }, {
+//        println("Error saving token")
+//    })
+//}
