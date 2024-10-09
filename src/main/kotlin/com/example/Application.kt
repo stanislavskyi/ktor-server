@@ -1,11 +1,7 @@
 package com.example
 
-import com.example.plugins.*
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
+import com.example.plugins.configureRouting
 import io.ktor.server.application.*
-import java.io.FileInputStream
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)

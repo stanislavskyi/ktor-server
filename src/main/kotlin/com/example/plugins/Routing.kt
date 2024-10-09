@@ -1,6 +1,5 @@
 package com.example.plugins
 
-import com.google.cloud.firestore.FirestoreOptions
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
