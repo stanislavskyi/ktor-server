@@ -12,18 +12,19 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-
-    val serviceAccountJson = System.getenv("SERVICE_ACCOUNT_KEY")
-
-    println(serviceAccountJson)
-    println("asjfgasjgjasg")
-    //val serviceAccount = FileInputStream("google-services.json")
-
-    val options = FirebaseOptions.builder()
-        .setCredentials(GoogleCredentials.fromStream(ByteArrayInputStream(serviceAccountJson.toByteArray())))
-        //.setDatabaseUrl("https://musicplayerapplication-be7c8.firebaseio.com")
-        .build()
-
-    FirebaseApp.initializeApp(options)
+//
+//    val serviceAccountJson = System.getenv("SERVICE_ACCOUNT_KEY")
+//
+//    println(serviceAccountJson)
+//    println("asjfgasjgjasg")
+//    //val serviceAccount = FileInputStream("google-services.json")
+//
+//
+//    val fixedServiceAccountJson = serviceAccountJson.replace("\\n", "\n")
+//    val options = FirebaseOptions.builder()
+//        .setCredentials(GoogleCredentials.fromStream(ByteArrayInputStream(fixedServiceAccountJson.toByteArray())))
+//        .build()
+//
+//    FirebaseApp.initializeApp(options)
     configureRouting()
 }
