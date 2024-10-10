@@ -30,5 +30,5 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
     implementation("com.google.firebase:firebase-admin:9.4.0")
-//    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
 }
