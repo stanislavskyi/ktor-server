@@ -26,5 +26,6 @@ fun Application.module() {
 //        .build()
 //
 //    FirebaseApp.initializeApp(options)
+
     configureRouting()
 }
