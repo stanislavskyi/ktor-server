@@ -29,7 +29,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
-    implementation("com.google.firebase:firebase-admin:8.0.0")
+    //implementation("com.google.firebase:firebase-admin:8.0.0")
 //
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1")
