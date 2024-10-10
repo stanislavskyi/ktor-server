@@ -13,8 +13,10 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
 
-    val serviceAccountJson = System.getenv("SERVICE_ACCOUNT_JSON")
+    val serviceAccountJson = System.getenv("SERVICE_ACCOUNT_KEY")
 
+    println(serviceAccountJson)
+    println("asjfgasjgjasg")
     //val serviceAccount = FileInputStream("google-services.json")
 
     val options = FirebaseOptions.builder()
