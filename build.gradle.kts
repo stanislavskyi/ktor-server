@@ -43,4 +43,5 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:2.3.5") // Для настройки сериализации
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")  // Для сериализации
+
 }
