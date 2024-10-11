@@ -16,12 +16,16 @@ fun Application.configureRouting() {
 
         post("/save-token") {
 
+            log.info("ВЫЗВАН МЕТОД POST!")
+
             val request = call.receive<Map<String, String>>()
             val token = request["token"]
             val userId = request["userId"]
 
 
-            log.info("Received POST /save-token with data: $request")
+            log.info("Получен POST/save-token с данными: $request")
+            log.info("Получен token: $token")
+            log.info("Получен userId: $userId")
 
             if (token != null && userId != null) {
                 val db = FirestoreClient.getFirestore()
@@ -38,9 +42,9 @@ fun Application.configureRouting() {
                     log.info("Exception: $e")
                 }
 
-                call.respond(HttpStatusCode.OK, "Token saved successfully")
+                call.respond(HttpStatusCode.OK, "ТОКЕН СОХРАНЕН УСПЕШНО")
             } else {
-                call.respond(HttpStatusCode.BadRequest, "Missing token or userId")
+                call.respond(HttpStatusCode.BadRequest, "ОТСУТСТВУЕТ ТОКЕН ИЛИ АЙДИ")
             }
         }
     }
