@@ -13,10 +13,15 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
 
+
         post("/save-token") {
+
             val request = call.receive<Map<String, String>>()
             val token = request["token"]
             val userId = request["userId"]
+
+
+            log.info("Received POST /save-token with data: $request")
 
             if (token != null && userId != null) {
                 val db = FirestoreClient.getFirestore()
@@ -28,9 +33,9 @@ fun Application.configureRouting() {
 
                 try {
                     docRef.set(data).get()
-                    println("Token successfully saved for user: $userId")
+                    log.info("docRef.set(data).get()")
                 } catch (e: Exception) {
-                    println("Error saving token: ${e.message}")
+                    log.info("Exception: $e")
                 }
 
                 call.respond(HttpStatusCode.OK, "Token saved successfully")
