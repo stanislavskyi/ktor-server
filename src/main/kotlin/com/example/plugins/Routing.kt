@@ -23,6 +23,9 @@ fun Application.configureRouting() {
                 call.respondText("Данные успешно сохранены")
 
                 saveTokenToDatabase(request.userId, request.token)
+
+                call.respondText("ВСЁ ПОЛУЧИЛОСЬ")
+
             } catch (e: Exception) {
                 log.info("ОШИБКА: ${e.message}")
                 call.respondText("Ошибка при обработке данных: ${e.message}", status = HttpStatusCode.BadRequest)
