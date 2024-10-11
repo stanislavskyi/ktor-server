@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.json.Json
 
 
 fun Application.configureRouting() {
@@ -19,8 +20,16 @@ fun Application.configureRouting() {
             log.info("ВЫЗВАН МЕТОД POST!")
 
             try {
-                val request = call.receive<TokenData>()
+//                val request = call.receive<TokenData>()
+//                log.info("Получен POST /save-token REQUEST с данными: ${request.token}, ${request.userId}")
+
+                val rawContent  = call.receiveText()
+                log.info("Получены данные: $rawContent")  // Логирование сырого контента
+
+                // Пробуем преобразовать полученный JSON в объект TokenData
+                val request = Json.decodeFromString<TokenData>(rawContent)
                 log.info("Получен POST /save-token REQUEST с данными: ${request.token}, ${request.userId}")
+
             }catch (e: Exception){
                 log.info("ОШИБКА: ${e.message}")
             }
