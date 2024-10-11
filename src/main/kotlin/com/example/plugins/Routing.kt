@@ -7,13 +7,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+data class TokenData(val token: String, val userId: String)
+
 fun Application.configureRouting() {
     routing {
         get("/") {
             call.respondText("Hello World!")
         }
-
-        data class TokenData(val token: String, val userId: String)
 
         post("/save-token") {
             log.info("ВЫЗВАН МЕТОД POST!")
