@@ -7,7 +7,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
+private val log: Logger = LoggerFactory.getLogger("MyPlugin")
 
 fun Application.configureRouting() {
     routing {
@@ -26,6 +29,8 @@ fun Application.configureRouting() {
                 val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
                 log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
 
+                log.info("\n\n\n\n")
+
                 log.info("TOKEN: ${request.token}")
                 log.info("USERID: ${request.userId}")
 
@@ -42,16 +47,23 @@ fun Application.configureRouting() {
 
 fun saveTokenToDatabase(userId: String, token: String) {
     // Initialize Firestore
-    //val firestore = FirestoreOptions.getDefaultInstance().service
-    val firestore = FirestoreClient.getFirestore()
+    val firestore = FirestoreOptions.getDefaultInstance().service
+
+    log.info("TOKEN: ${token}")
+    log.info("USERID: ${userId}")
+
+    //val firestore = FirestoreClient.getFirestore()
+    log.info("FIRESTORE: $firestore")
 
     // Create a reference to the user's document
     val docRef = firestore.collection("users").document(userId)
+    log.info("DOCREF: $docRef")
 
     // Create a map of data to update in the document
     val data = hashMapOf<String, Any>( //val mapOf
         "token" to token
     )
+    log.info("DATA MAP : $data")
 
     docRef.set(data).get()
 
