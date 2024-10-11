@@ -47,12 +47,12 @@ fun Application.configureRouting() {
 
 fun saveTokenToDatabase(userId: String, token: String) {
     // Initialize Firestore
-    val firestore = FirestoreOptions.getDefaultInstance().service
+    //val firestore = FirestoreOptions.getDefaultInstance().service
 
     log.info("TOKEN: ${token}")
     log.info("USERID: ${userId}")
 
-    //val firestore = FirestoreClient.getFirestore()
+    val firestore = FirestoreClient.getFirestore()
     log.info("FIRESTORE: $firestore")
 
     // Create a reference to the user's document
