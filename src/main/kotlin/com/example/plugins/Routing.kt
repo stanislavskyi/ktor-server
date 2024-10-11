@@ -7,8 +7,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-data class TokenData(val token: String, val userId: String)
-
 fun Application.configureRouting() {
     routing {
         get("/") {
