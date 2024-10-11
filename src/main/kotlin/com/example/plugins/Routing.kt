@@ -1,6 +1,6 @@
 package com.example.plugins
 
-import com.google.cloud.firestore.FirestoreOptions
+import com.google.firebase.cloud.FirestoreClient
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -19,7 +19,20 @@ fun Application.configureRouting() {
             val userId = request["userId"]
 
             if (token != null && userId != null) {
-                //saveTokenToDatabase(userId, token)
+                val db = FirestoreClient.getFirestore()
+                val docRef = db.collection("users").document(userId)
+
+                val data = hashMapOf<String, Any>(
+                    "token" to token
+                )
+
+                try {
+                    docRef.set(data).get()
+                    println("Token successfully saved for user: $userId")
+                } catch (e: Exception) {
+                    println("Error saving token: ${e.message}")
+                }
+
                 call.respond(HttpStatusCode.OK, "Token saved successfully")
             } else {
                 call.respond(HttpStatusCode.BadRequest, "Missing token or userId")
