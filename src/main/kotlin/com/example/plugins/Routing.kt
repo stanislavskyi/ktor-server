@@ -22,7 +22,9 @@ fun Application.configureRouting() {
                 log.info("Получен POST /save-token REQUEST с данными: ${request.token}, ${request.userId}")
                 call.respondText("Данные успешно сохранены")
 
-                saveTokenToDatabase(request.userId, request.token)
+                val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
+                log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
+                //saveTokenToDatabase(request.userId, request.token)
 
                 call.respondText("ВСЁ ПОЛУЧИЛОСЬ")
 
