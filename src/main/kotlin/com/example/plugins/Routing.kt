@@ -7,40 +7,61 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+
 fun Application.configureRouting() {
     routing {
         get("/") {
             call.respondText("Hello World!")
         }
 
+
         post("/save-token") {
             log.info("ВЫЗВАН МЕТОД POST!")
 
             try {
                 val request = call.receive<TokenData>()
-
-                log.info("Получен POST /save-token с данными: $request")
-
-                val db = FirestoreClient.getFirestore()
-                val docRef = db.collection("users").document(request.userId)
-
-                val data = hashMapOf<String, Any>(
-                    "token" to request.token
-                )
-
-                try {
-                    docRef.set(data).get()
-                    log.info("Token successfully saved for user: ${request.userId}")
-                } catch (e: Exception) {
-                    log.info("Error saving token: ${e.message}")
-                }
-
-                call.respond(HttpStatusCode.OK, "ТОКЕН СОХРАНЕН УСПЕШНО")
-            } catch (e: Exception) {
-                log.info("Error receiving data: ${e.message}")
-                call.respond(HttpStatusCode.BadRequest, "Error receiving data")
+                log.info("Получен POST /save-token REQUEST с данными: ${request.token}, ${request.userId}")
+            }catch (e: Exception){
+                log.info("ОШИБКА: ${e.message}")
             }
         }
+//        post("/save-token") {
+//            log.info("ВЫЗВАН МЕТОД POST!")
+//
+//            try {
+//                val request = call.receive<TokenData>()
+//
+//                log.info("Получен POST /save-token с данными: $request")
+//
+//                val db = FirestoreClient.getFirestore()
+//                val docRef = db.collection("users").document(request.userId)
+//
+//                val data = hashMapOf<String, Any>(
+//                    "token" to request.token
+//                )
+//
+//                try {
+//                    docRef.set(data).get()
+//                    log.info("Token successfully saved for user: ${request.userId}")
+//                } catch (e: Exception) {
+//                    log.info("Error saving token: ${e.message}")
+//                }
+//
+//                call.respond(HttpStatusCode.OK, "ТОКЕН СОХРАНЕН УСПЕШНО")
+//            } catch (e: Exception) {
+//                log.info("Error receiving data: ${e.message}")
+//                call.respond(HttpStatusCode.BadRequest, "Error receiving data")
+//            }
+//        }
+
+
+
+
+
+
+
+
+
 
 //        post("/save-token") {
 //            log.info("ВЫЗВАН МЕТОД POST!")
