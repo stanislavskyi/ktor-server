@@ -1,6 +1,7 @@
 package com.example.plugins
 
 import com.google.cloud.firestore.FirestoreOptions
+import com.google.firebase.cloud.FirestoreClient
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -20,17 +21,20 @@ fun Application.configureRouting() {
             try {
                 val request = call.receive<TokenData>()
                 log.info("Получен POST /save-token REQUEST с данными: ${request.token}, ${request.userId}")
-                call.respondText("Данные успешно сохранены")
+
 
                 val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
                 log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
-                //saveTokenToDatabase(request.userId, request.token)
 
-                call.respondText("ВСЁ ПОЛУЧИЛОСЬ")
+                log.info("TOKEN: ${request.token}")
+                log.info("USERID: ${request.userId}")
+
+                saveTokenToDatabase(request.userId, request.token)
+
+
 
             } catch (e: Exception) {
                 log.info("ОШИБКА: ${e.message}")
-                call.respondText("Ошибка при обработке данных: ${e.message}", status = HttpStatusCode.BadRequest)
             }
         }
     }
@@ -38,7 +42,8 @@ fun Application.configureRouting() {
 
 fun saveTokenToDatabase(userId: String, token: String) {
     // Initialize Firestore
-    val firestore = FirestoreOptions.getDefaultInstance().service
+    //val firestore = FirestoreOptions.getDefaultInstance().service
+    val firestore = FirestoreClient.getFirestore()
 
     // Create a reference to the user's document
     val docRef = firestore.collection("users").document(userId)
