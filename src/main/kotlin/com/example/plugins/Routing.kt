@@ -46,8 +46,6 @@ fun Application.configureRouting() {
 }
 
 fun saveTokenToDatabase(userId: String, token: String) {
-    // Initialize Firestore
-    //val firestore = FirestoreOptions.getDefaultInstance().service
 
     log.info("TOKEN: ${token}")
     log.info("USERID: ${userId}")
@@ -55,16 +53,16 @@ fun saveTokenToDatabase(userId: String, token: String) {
     val firestore = FirestoreClient.getFirestore()
     log.info("FIRESTORE: $firestore")
 
-    // Create a reference to the user's document
+
     val docRef = firestore.collection("users").document(userId)
     log.info("DOCREF: $docRef")
 
-    // Create a map of data to update in the document
+
     val data = hashMapOf<String, Any>( //val mapOf
         "token" to token
     )
     log.info("DATA MAP : $data")
 
-    docRef.set(data).get()
+    docRef.update(data).get()
 
 }
