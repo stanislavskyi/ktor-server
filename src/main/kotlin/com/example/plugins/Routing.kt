@@ -18,7 +18,7 @@ fun Application.configureRouting() {
 
             log.info("ВЫЗВАН МЕТОД POST!")
 
-            val request = call.receive<Map<String, String>>()
+            val request = call.receive<Map<String, Any>>()
             val token = request["token"]
             val userId = request["userId"]
 
@@ -29,7 +29,7 @@ fun Application.configureRouting() {
 
             if (token != null && userId != null) {
                 val db = FirestoreClient.getFirestore()
-                val docRef = db.collection("users").document(userId)
+                val docRef = db.collection("users").document(userId.toString())
 
                 val data = hashMapOf<String, Any>(
                     "token" to token
