@@ -5,6 +5,7 @@ val kotlin_version: String by project
 plugins {
     kotlin("jvm") version "2.0.20"
     id("io.ktor.plugin") version "3.0.0-rc-2"
+    kotlin("plugin.serialization") version "1.8.0"  // Добавьте этот плагин
 }
 
 group = "com.example"
@@ -40,4 +41,6 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5") // Для JSON
     implementation("ch.qos.logback:logback-classic:1.2.11") // Для логирования
     implementation("io.ktor:ktor-server-content-negotiation:2.3.5") // Для настройки сериализации
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")  // Для сериализации
 }
