@@ -2,6 +2,8 @@ package com.example.plugins
 
 import com.google.cloud.firestore.FirestoreOptions
 import com.google.firebase.cloud.FirestoreClient
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.Message
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -64,5 +66,18 @@ fun saveTokenToDatabase(userId: String, token: String) {
     log.info("DATA MAP : $data")
 
     docRef.update(data).get()
+
+    val message = Message.builder()
+        .setToken(token)  // Токен устройства пользователя
+        .putData("title", "Новое уведомление")
+        .putData("body", "Ваш токен был обновлен")
+        .build()
+
+    try {
+        val response = FirebaseMessaging.getInstance().send(message)
+        log.info("Уведомление отправлено: $response")
+    } catch (e: Exception) {
+        log.error("Ошибка отправки уведомления: ${e.message}")
+    }
 
 }
