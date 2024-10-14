@@ -89,7 +89,7 @@ suspend fun sendNotification(client: HttpClient, token: String) {
             headers {
                 append(
                     "Authorization",
-                    "Bearer ya29.a0AcM612xukjw9lJwVYG3AadUW-LzxOkyCjf_nte4ZMJrUT5Q6i1LJOTC9CUXX62vnCSSOaC5Ef23ryj80vD4v3yuXFgPSeVjg5zs1jipGHT07Qf9y9cazSRbbXNlxG1QtAiQKSbbHt0j6jRBsiZiEmdTqG23MM2m3gUdiFbo0aCgYKAQsSARMSFQHGX2MidvhmMejlauPJMa4v5cNITg0175"
+                    "Bearer ya29.a0AcM612zPfITZNnDkJDFnZWdxww7cKL2PNNU9upZCcEU7zluA4Q1d4Utn-LA73l2XHZK7Dne6w9yyp4HfILpSVha7OjVYCUl2bGhRbXkUmy8_IPnOpgfh6NWuaN8ZEQ4OubZrfDnGtcBbnthjKTOSitCj7RNQUrK25KQY0jm43QaCgYKAUQSARMSFQHGX2Mi5eLSCIfZkg3FCnpcKP5URQ0177"
                 )
                 append("Content-Type", "application/json")
             }
