@@ -34,12 +34,13 @@ fun Application.configureRouting() {
                 val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
                 log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
 
-                log.info("\n\n\n\n")
+
 
                 log.info("TOKEN: ${request.token}")
                 log.info("USERID: ${request.userId}")
+                log.info("\n\n\n\n\n\n\n")
 
-                saveTokenToDatabase(request.userId, request.token)
+                //saveTokenToDatabase(request.userId, request.token)
 
                 val client = HttpClient(CIO) {
                     install(ContentNegotiation) {
@@ -67,7 +68,7 @@ fun Application.configureRouting() {
                     )
                 }
 
-                println("RESPONSE FCM: ${response.bodyAsText()}")
+                log.info("RESPONSE FCM: ${response.bodyAsText()}")
                 client.close()
 
 
