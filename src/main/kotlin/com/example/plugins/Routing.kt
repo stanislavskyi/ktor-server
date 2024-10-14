@@ -18,6 +18,10 @@ import org.slf4j.LoggerFactory
 private val log: Logger = LoggerFactory.getLogger("MyPlugin")
 
 fun Application.configureRouting() {
+    install(ContentNegotiation) {
+        gson()
+    }
+
     routing {
         get("/") {
             call.respondText("Hello World!")
@@ -40,11 +44,7 @@ fun Application.configureRouting() {
                 log.info("USERID: ${request.userId}")
                 log.info("\n\n\n\n\n\n\n")
 
-                val client = HttpClient(CIO) {
-                    install(ContentNegotiation) {
-                        gson()
-                    }
-                }
+                val client = HttpClient(CIO)
 
                 sendNotification(client, request.token)
                 log.info("SEND NOTIFICATION SUCCESSFULL")
