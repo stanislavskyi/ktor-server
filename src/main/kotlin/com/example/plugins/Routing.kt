@@ -1,16 +1,19 @@
 package com.example.plugins
 
-import com.google.cloud.firestore.FirestoreOptions
 import com.google.firebase.cloud.FirestoreClient
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.Message
-import io.ktor.http.*
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.serialization.gson.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
 
 private val log: Logger = LoggerFactory.getLogger("MyPlugin")
 
@@ -38,6 +41,34 @@ fun Application.configureRouting() {
 
                 saveTokenToDatabase(request.userId, request.token)
 
+                val client = HttpClient(CIO) {
+                    install(ContentNegotiation) {
+                        gson()
+                    }
+                }
+
+                val response: HttpResponse = client.post("https://fcm.googleapis.com/v1/projects/musicplayerapplication-be7c8/messages:send") {
+                    headers {
+                        append("Authorization", "Bearer ya29.a0AcM612xukjw9lJwVYG3AadUW-LzxOkyCjf_nte4ZMJrUT5Q6i1LJOTC9CUXX62vnCSSOaC5Ef23ryj80vD4v3yuXFgPSeVjg5zs1jipGHT07Qf9y9cazSRbbXNlxG1QtAiQKSbbHt0j6jRBsiZiEmdTqG23MM2m3gUdiFbo0aCgYKAQsSARMSFQHGX2MidvhmMejlauPJMa4v5cNITg0175")
+                        append("Content-Type", "application/json")
+                    }
+                    setBody(
+                        """
+            {
+              "message": {
+                "token": "${request.token}",
+                "notification": {
+                  "title": "title",
+                  "body": "body"
+                }
+              }
+            }
+            """.trimIndent()
+                    )
+                }
+
+                println("RESPONSE FCM: ${response.bodyAsText()}")
+                client.close()
 
 
             } catch (e: Exception) {
@@ -46,6 +77,7 @@ fun Application.configureRouting() {
         }
     }
 }
+
 
 fun saveTokenToDatabase(userId: String, token: String) {
 
@@ -67,17 +99,6 @@ fun saveTokenToDatabase(userId: String, token: String) {
 
     docRef.update(data).get()
 
-    val message = Message.builder()
-        .setToken(token)  // Токен устройства пользователя
-        .putData("title", "Новое уведомление")
-        .putData("body", "Ваш токен был обновлен")
-        .build()
-
-    try {
-        val response = FirebaseMessaging.getInstance().send(message)
-        log.info("Уведомление отправлено: $response")
-    } catch (e: Exception) {
-        log.error("Ошибка отправки уведомления: ${e.message}")
-    }
+    log.info("UPDATE DATA \n\n")
 
 }

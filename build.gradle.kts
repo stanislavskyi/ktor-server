@@ -34,11 +34,25 @@ dependencies {
 
 
     implementation("io.ktor:ktor-server-netty:2.3.5") // Версия может быть другой
-    implementation("io.ktor:ktor-server-core:2.3.5")
+    // implementation("io.ktor:ktor-server-core:2.3.5")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5") // Для JSON
-    implementation("ch.qos.logback:logback-classic:1.2.11") // Для логирования
+    implementation("ch.qos.logback:logback-classic:1.4.12") // Для логирования
     implementation("io.ktor:ktor-server-content-negotiation:2.3.5") // Для настройки сериализации
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")  // Для сериализации
+
+
+    //
+//    implementation("io.ktor:ktor-client-core:2.0.0")
+//    implementation("io.ktor:ktor-client-cio:2.0.0")
+//    implementation("io.ktor:ktor-client-auth:2.0.0")
+
+    implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("io.ktor:ktor-client-cio:2.0.0")
+    implementation("io.ktor:ktor-client-auth:2.0.0")
+    //implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-serialization-gson:2.0.0")
+
+
 
 }
