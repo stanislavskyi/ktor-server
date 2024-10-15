@@ -76,7 +76,7 @@ suspend fun sendNotification(client: HttpClient, token: String) {
                 """
             {
               "message": {
-                "token": "fYuluxZMSjS4ZBPIFtrPy2:APA91bFqdl4qC-ai8c04AY3CkTJNLVjDNvIKISqKwjmdLw3zOBagP-tIM-9EvTi-fsRAWd7F0gRjki2mbHsLAYkFr90U7yl4PYQZkDeIYug6jbycgZTfX2s1ILaqZEzl0GuAowDtxU2U",
+                "token": "eU1ayE9AS3ab1cC2t3FWH7:APA91bGG1IR_jPofgdA8MKaOs_bISyM96_i_Uut2L1F8SDGgPmhgt6XyoKSQvq1urDfUOahOT4SqbQP3MqxZi9yX-flbBZ-Tifex8x1kRAYzaK_zTSe-ws-FhrZDN6_bPkCsWeO_JjRM",
                 "notification": {
                   "title": "title",
                   "body": "body"
