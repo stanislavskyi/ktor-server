@@ -1,6 +1,9 @@
 package com.example.plugins
 
+import com.google.api.core.ApiFuture
 import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.firestore.DocumentSnapshot
+import com.google.cloud.firestore.Firestore
 import com.google.firebase.cloud.FirestoreClient
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -33,9 +36,10 @@ fun Application.configureRouting() {
                 log.info("USERID: ${request.userId}")
                 log.info("\n\n\n\n\n\n\n")
 
-                val client = HttpClient(CIO)
+                val tokentoken = getTokenFromFirebaseDB(request.userId)
+                log.info("\n\n\n\n\n\n\n$tokentoken")
 
-                sendNotification(client, request.token)
+                //sendNotification(request.token)
                 log.info("SEND NOTIFICATION SUCCESSFULL")
                 //saveTokenToDatabase(request.userId, request.token)
 
@@ -47,48 +51,68 @@ fun Application.configureRouting() {
     }
 }
 
-fun getAccessToken(): String {
+//fun getAccessToken(): String {
+//
+//    val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
+//    log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
+//
+//
+//    val googleCredentials = GoogleCredentials.fromStream(firebaseConfig.byteInputStream())
+//        .createScoped(listOf("https://www.googleapis.com/auth/firebase.messaging"))
+//    googleCredentials.refreshIfExpired()
+//
+//    return googleCredentials.accessToken.tokenValue
+//}
+//
+//suspend fun sendNotification(token: String) {
+//    val client = HttpClient(CIO)
+//    val accessToken = getAccessToken()
+//    log.info("ACCESS TOKEN $accessToken")
+//    val response: HttpResponse =
+//        client.post("https://fcm.googleapis.com/v1/projects/musicplayerapplication-be7c8/messages:send") {
+//            headers {
+//                append(
+//                    "Authorization",
+//                    "Bearer $accessToken"
+//                )
+//                append("Content-Type", "application/json")
+//            }
+//            setBody(
+//                """
+//            {
+//              "message": {
+//                "token": "eU1ayE9AS3ab1cC2t3FWH7:APA91bGG1IR_jPofgdA8MKaOs_bISyM96_i_Uut2L1F8SDGgPmhgt6XyoKSQvq1urDfUOahOT4SqbQP3MqxZi9yX-flbBZ-Tifex8x1kRAYzaK_zTSe-ws-FhrZDN6_bPkCsWeO_JjRM",
+//                "notification": {
+//                  "title": "title",
+//                  "body": "body"
+//                }
+//              }
+//            }
+//            """.trimIndent()
+//            )
+//        }
+//
+//    log.info("RESPONSE FCM: ${response.bodyAsText()}")
+//    client.close()
+//}
 
-    val firebaseConfig = System.getenv("SERVICE_ACCOUNT_KEY")
-    log.info("SERVICE_ACCOUNT_KEY $firebaseConfig")
 
-    val googleCredentials = GoogleCredentials.fromStream(firebaseConfig.byteInputStream())
-        .createScoped(listOf("https://www.googleapis.com/auth/firebase.messaging"))
-    googleCredentials.refreshIfExpired()
+fun getTokenFromFirebaseDB(userId: String): String? {
+    val firestore: Firestore = FirestoreClient.getFirestore()
+    val docRef = firestore.collection("users").document(userId)
+    val future: ApiFuture<DocumentSnapshot> = docRef.get() // Асинхронный вызов
 
-    return googleCredentials.accessToken.tokenValue
-}
-
-suspend fun sendNotification(client: HttpClient, token: String) {
-
-    val accessToken = getAccessToken()
-    log.info("ACCESS TOKEN $accessToken")
-    val response: HttpResponse =
-        client.post("https://fcm.googleapis.com/v1/projects/musicplayerapplication-be7c8/messages:send") {
-            headers {
-                append(
-                    "Authorization",
-                    "Bearer $accessToken"
-                )
-                append("Content-Type", "application/json")
-            }
-            setBody(
-                """
-            {
-              "message": {
-                "token": "eU1ayE9AS3ab1cC2t3FWH7:APA91bGG1IR_jPofgdA8MKaOs_bISyM96_i_Uut2L1F8SDGgPmhgt6XyoKSQvq1urDfUOahOT4SqbQP3MqxZi9yX-flbBZ-Tifex8x1kRAYzaK_zTSe-ws-FhrZDN6_bPkCsWeO_JjRM",
-                "notification": {
-                  "title": "title",
-                  "body": "body"
-                }
-              }
-            }
-            """.trimIndent()
-            )
+    return try {
+        val document = future.get() // Ожидаем результата синхронно
+        if (document.exists()) {
+            document.getString("token") // Возвращаем FCM токен, если документ существует
+        } else {
+            null
         }
-
-    log.info("RESPONSE FCM: ${response.bodyAsText()}")
-    client.close()
+    } catch (e: Exception) {
+        println("Ошибка получения токена: ${e.message}")
+        null
+    }
 }
 
 fun saveTokenToDatabase(userId: String, token: String) {

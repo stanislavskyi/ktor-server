@@ -11,7 +11,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-
     FirebaseAdmin.init()
     install(ContentNegotiation) {
         json(Json {
@@ -20,8 +19,6 @@ fun Application.module() {
             ignoreUnknownKeys = true
         })
     }
-
-
 
     configureRouting()
 }
