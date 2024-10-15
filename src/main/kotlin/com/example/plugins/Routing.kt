@@ -30,6 +30,7 @@ fun Application.configureRouting() {
             try {
                 val request = call.receive<TokenData>()
                 val token = getTokenFromFirebaseDB(request.userId) ?: ""
+                log.info("\nTOKEN /save-userId $token\n")
                 sendNotification(token)
             } catch (e: Exception) {
                 log.info("ERROR /save-userId: ${e.message}")
@@ -39,6 +40,7 @@ fun Application.configureRouting() {
         post("/save-token") {
             try {
                 val request = call.receive<TokenData>()
+                log.info("\n/save-token ${request.userId}, ${request.token}\n")
                 saveTokenToDatabase(request.userId, request.token)
             } catch (e: Exception) {
                 log.info("ERROR /save-token: ${e.message}")
@@ -101,7 +103,9 @@ fun getTokenFromFirebaseDB(userId: String): String? {
     return try {
         val document = future.get() // Ожидаем результата синхронно
         if (document.exists()) {
-            document.getString("token") // Возвращаем FCM токен, если документ существует
+            val gt = document.getString("token")
+            log.info("getTokenFromFirebaseDB \n\n$userId\n$gt\n\n")
+            return gt // Возвращаем FCM токен, если документ существует
         } else {
             null
         }
@@ -121,5 +125,6 @@ fun saveTokenToDatabase(userId: String, token: String) {
     )
 
     docRef.update(data).get()
+    log.info("saveTokenToDatabase")
 
 }
