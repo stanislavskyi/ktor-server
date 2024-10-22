@@ -29,9 +29,18 @@ fun Application.configureRouting() {
         post("/save-userId") {
             try {
                 val request = call.receive<TokenData>()
-                val token = getTokenFromFirebaseDB(request.userId) ?: ""
+                val token = getTokenFromFirebaseDB(request.userId, request.currentUser)
                 log.info("\nTOKEN /save-userId $token\n")
-                sendNotification(token)
+
+                if (token != null){
+                    val tokenData = token["token"] ?: "Токен не найден"
+                    val name = token["name"] ?: "Имя не найдено"
+
+                    sendNotification(tokenData, name)
+                }
+
+
+
             } catch (e: Exception) {
                 log.info("ERROR /save-userId: ${e.message}")
             }
@@ -62,7 +71,7 @@ fun getAccessToken(): String {
     return googleCredentials.accessToken.tokenValue
 }
 
-suspend fun sendNotification(token: String) {
+suspend fun sendNotification(token: String, name: String) {
     val client = HttpClient(CIO)
     val accessToken = getAccessToken()
     log.info("ACCESS TOKEN $accessToken")
@@ -81,7 +90,7 @@ suspend fun sendNotification(token: String) {
               "message": {
                 "token": "$token",
                 "notification": {
-                  "title": "title",
+                  "title": "$name",
                   "body": "body"
                 }
               }
@@ -95,20 +104,42 @@ suspend fun sendNotification(token: String) {
 }
 
 
-fun getTokenFromFirebaseDB(userId: String): String? {
+fun getTokenFromFirebaseDB(userId: String, currentUser: String): Map<String, String>? {
     val firestore: Firestore = FirestoreClient.getFirestore()
     val docRef = firestore.collection("users").document(userId)
     val future: ApiFuture<DocumentSnapshot> = docRef.get() // Асинхронный вызов
 
+    val currentDocRef = firestore.collection("users").document(currentUser)
+    val currentFuture: ApiFuture<DocumentSnapshot> = currentDocRef.get() // Асинхронный вызов
+
+    val result = mutableMapOf<String, String>()
+
     return try {
         val document = future.get() // Ожидаем результата синхронно
+        val currentDocument = currentFuture.get()
+
         if (document.exists()) {
             val gt = document.getString("token")
+
             log.info("getTokenFromFirebaseDB \n\n$userId\n$gt\n\n")
-            return gt // Возвращаем FCM токен, если документ существует
-        } else {
-            null
+
+            result["token"] = gt ?: "" // Добавляем токен, или пустую строку, если он равен null
+
+
         }
+
+        if (currentDocument.exists()){
+            val gt = currentDocument.getString("name")
+
+            log.info("getTokenFromFirebaseDB \n\n$currentUser\n$gt\n\n")
+
+            result["name"] = gt ?: "" // Добавляем токен, или пустую строку, если он равен null
+
+
+        }
+
+        return result
+
     } catch (e: Exception) {
         log.info("Ошибка получения токена: ${e.message}")
         null
