@@ -90,8 +90,8 @@ suspend fun sendNotification(token: String, name: String) {
               "message": {
                 "token": "$token",
                 "notification": {
-                  "title": "$name",
-                  "body": "body"
+                  "title": "${name.replace("@gmail.com", "")}",
+                  "body": "Присоединиться к другу?"
                 }
               }
             }
